@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Josefin+Slab|Arvo|Lato|Vollkorn|Abril+Fatface|Old+Standard+TT|Droid+Sans|Lobster|Inconsolata|Montserrat|Playfair+Display|Karla|Alegreya|Libre+Baskerville|Merriweather|Lora|Archivo+Narrow|Neuton|Signika|Questrial|Fjalla+One|Bitter|Varela+Round);
+
+  .background {
+    fill: transparent;
+    pointer-events: all;
+  }
+
+  body {
+    background: #fdf1e2;
+  }
+
+  .map-layer {
+    fill: #fff;
+    stroke: #aaa;
+  }
+
+  .effect-layer {
+    pointer-events:none;
+  }
+
+  text {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 300;
+  }
+
+  text.big-text {
+    font-size: 30px;
+    font-weight: 400;
+  }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <svg id="map"></svg>
+      </div>
+      <div class="col-md-6">
+        <svg id="bubbles"></svg>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script>
+
+  var width = 575,
+      height = 600,
+      centered;
+
+  // Define color scale
+  var color = d3.scaleLinear()
+    .domain([1, 20])
+    .clamp(true)
+    .range(['#f7fbff','#084594']);
+
+  var projection = d3.geoMercator()
+    .scale(120000)
+    // Center the Map in Boston
+    .center([-71.0589, 42.323])
+    .translate([width / 2, height / 2]);
+
+  var path = d3.geoPath()
+    .projection(projection)
+    .pointRadius(1.5);
+
+  // Set svg width & height
+  var map = d3.select('#map')
+    .attr('width', width)
+    .attr('height', height);
+
+  // Add background
+  map.append('rect')
+    .attr('class', 'background')
+    .attr('width', width)
+    .attr('height', height)
+    .on('click', clicked);
+
+  var g = map.append('g');
+
+  var effectLayer = g.append('g')
+    .classed('effect-layer', true);
+
+  var mapLayer = g.append('g')
+    .classed('map-layer', true);
+
+  var dummyText = g.append('text')
+    .classed('dummy-text', true)
+    .attr('x', 10)
+    .attr('y', 30)
+    .style('opacity', 0);
+
+  var bigText = g.append('text')
+    .classed('big-text', true)
+    .attr('x', 200)
+    .attr('y', 550);
+
+  /** Build the map. **/
+  d3.json('data/orgs-by-neighborhood.json', function(error, mapData) {
+    // Update color scale domain based on data
+    color.domain([0, d3.max(mapData, numOrgs)]);
+
+    // Draw each province as a path
+    mapLayer.selectAll('path')
+      .data(mapData)
+      .enter().append('path')
+        .attr('d', function(d) {
+          return path(d['borders']);
+        })
+        .attr('vector-effect', 'non-scaling-stroke')
+        .style('fill', fillFn)
+        .on('mouseover', mouseover)
+        .on('mouseout', mouseout)
+        .on('click', clicked);
+  });
+
+  var format = d3.format(",d");
+  var color2 = d3.scaleOrdinal().range(d3.schemeCategory20c);
+
+  var bubble = d3.pack()
+    .size([width, height])
+    .padding(1.5);
+
+  var bubbles = d3.select("#bubbles")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("class", "bubble");
+
+  var tooltip = d3.select("body")
+    .append("div")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("visibility", "hidden")
+    .style("color", "white")
+    .style("padding", "8px")
+    .style("background-color", "rgba(0, 0, 0, 0.75)")
+    .style("border-radius", "6px")
+    .style("font", "12px sans-serif")
+    .text("tooltip");
+
+  /** Build the bubbles. **/
+  d3.json("data/courses-by-service.json", function(error, classes) {
+    if (error) throw error;
+
+    var root = d3.hierarchy(classes)
+      .sum(function(d) {
+        return d.volunteers ? d.volunteers : d.size;
+      })
+      .each(function(d) {
+        var name;
+        if (name = d.data.name) {
+          var i = name.lastIndexOf(".");
+          d.id = name.replace(" ", "-");
+          d.package = name.slice(0, i);
+          d.class = name.slice(i + 1);
+        }
+      });
+
+    var node = bubbles.selectAll(".node")
+      .data(bubble(root).children/*.leaves()*/)
+      .enter().append("g")
+        .attr("class", "node")
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+    node.append("circle")
+      .attr("id", function(d) { return d.id; })
+      .attr("r", function(d) { return d.r; })
+      .style("fill", function(d) { return color2(d.package); });
+
+    node.append("clipPath")
+      .attr("id", function(d) { return "clip-" + d.id; })
+      .append("use")
+        .attr("xlink:href", function(d) { return "#" + d.id; });
+
+    node.append("text")
+      .attr("text-anchor", "middle")
+      .attr("clip-path", function(d) { return "url(#clip-" + d.id + ")"; })
+      .style("font-size", function(d) { return d.r / 3; })
+      .style("font-weight", 350)
+      .selectAll("tspan")
+        .data(function(d) {
+          return d.class.split(/(?=[A-Z][^A-Z])/g).map(function(ts) {
+            return { text: ts, r: d.r };
+          });
+        })
+        .enter().append("tspan")
+          .attr("x", 0)
+          .attr("y", function(d, i, nodes) { return (5 * d.r / 12) + (i - nodes.length / 2 - 0.5) * (d.r / 3); })
+          .text(function(d) { return d.r > 25 ? d.text : ""; });
+
+    node.append("title")
+        .text(function(d) { return d.id + "\n" + format(d.value); });
+  });
+
+  // Get province name
+  function nameFn(d){
+    return d ? d.name : null;
+  }
+
+  // Get province name length
+  function nameLength(d){
+    var n = nameFn(d);
+    return n ? n.length : 0;
+  }
+
+    // Get list of neighborhood orgs
+  function numFn(d){
+    return d ? d.orgs : null;
+  }
+
+  // Get neighborhood's number of organizations
+  function numOrgs(d){
+    var n = numFn(d);
+    return n ? n.length : 0;
+  }
+
+  // Get province color
+  function fillFn(d){
+    return color(numOrgs(d));
+  }
+
+  // When clicked, zoom in
+  function clicked(d) {
+    bigText.text('');
+
+    var x, y, k;
+
+    // Compute centroid of the selected path
+    if (d && centered !== d) {
+      var centroid = path.centroid(d.borders);
+      x = centroid[0];
+      y = centroid[1];
+      // zoom in based on the size of the neighborhood
+      xrange = path.bounds(d.borders)[1][0] - path.bounds(d.borders)[0][0];
+      yrange = path.bounds(d.borders)[1][1] - path.bounds(d.borders)[0][1];
+      k = xrange > yrange ? (height*.75)/xrange : (height*.75)/yrange;
+
+      // create the pins based on the size of the neighborhood
+      path.pointRadius(xrange > yrange ? xrange/75 : yrange/75);
+
+      centered = d;
+    } else {
+      x = width / 2;
+      y = height / 2;
+      k = 1;
+      centered = null;
+    }
+
+    // Highlight the clicked province
+    mapLayer.selectAll('path')
+      .style('fill', function(d) {
+        if (centered) {
+          return d === centered ? 'white' : '#d9d9d9';
+        } else {
+          return fillFn(d);
+        }
+      });
+
+    // Zoom
+    g.transition()
+      .duration(750)
+      .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')scale(' + k + ')translate(' + -x + ',' + -y + ')');
+
+
+    // place pins
+    if(centered){
+      var dots = g.selectAll(".pin")
+        .data(d.orgs,function(d){ return d.id });
+      dots.enter().append("path")
+        .attr("d", function(d){
+          return path({ type: 'Point', coordinates: [parseFloat(d.lng), parseFloat(d.lat)] });
+        })
+        .attr("class", "pin")
+        .attr("fill", "blue");
+      dots.exit().remove();
+    }
+    else {
+      g.selectAll(".pin").remove()
+    }
+  }
+
+  function mouseover(d) {
+    // Highlight hovered province
+    d3.select(this).style('fill', function (d) {
+      if (centered && d === centered) {
+        return 'white';
+      } else {
+        return '#fee391';
+      }
+    });
+
+    // Draw neighborhood name
+    if (!centered) {
+        bigText.text(nameFn(d));
+    }
+  }
+
+  function mouseout(d){
+    // Reset province color
+    mapLayer.selectAll('path')
+      .style('fill', function(d){
+        if (centered) {
+          return d === centered ? 'white' : '#d9d9d9';
+        } else {
+          return fillFn(d);
+        }
+      });
+
+    // Clear neighborhood name
+    bigText.text('');
+  }
+
+  // Returns a flattened hierarchy containing all leaf nodes under the root.
+  function classes(root) {
+    var classes = [];
+
+    function recurse(name, node) {
+      if (node.children) node.children.forEach(function(child) { recurse(node.name, child); });
+      else classes.push({packageName: name, className: node.name, value: node.size});
+    }
+
+    recurse(null, root);
+    return {children: classes};
+  }
+
+  </script>
+</body>
