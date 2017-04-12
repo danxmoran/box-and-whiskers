@@ -1,17 +1,104 @@
 <!DOCTYPE html>
 <head>
   <meta charset="utf-8">
-  <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-  @import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Josefin+Slab|Arvo|Lato|Vollkorn|Abril+Fatface|Old+Standard+TT|Droid+Sans|Lobster|Inconsolata|Montserrat|Playfair+Display|Karla|Alegreya|Libre+Baskerville|Merriweather|Lora|Archivo+Narrow|Neuton|Signika|Questrial|Fjalla+One|Bitter|Varela+Round);
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DS4200 Final Project</title>
 
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous" rel="stylesheet">
+  <style>
+
+  /* Page styles. */
+  body {
+    padding-top: 50px;
+    background: #e7e7e7;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  }
+
+  #navbar {
+    background-color: #cf090e;
+    border-bottom: 1px solid #bcb5ab;
+  }
+
+  .navbar-default .navbar-brand,
+  .navbar-default .navbar-brand:hover,
+  .navbar-default .navbar-nav li a {
+    color: #fff;
+  }
+
+  .navbar-default .navbar-toggle .icon-bar {
+    background-color: #fff;
+  }
+
+  .navbar-default .navbar-nav .active a {
+    color: black;
+  }
+
+  .container > .row {
+    margin-bottom: 20px;
+  }
+
+  .container > .row:first-of-type {
+    margin-top: 20px;
+  }
+
+  .container > .row > .col-md-12 {
+    background-color: white;
+    border-top: 15px solid #cf090e;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+  }
+
+  a {
+    color: #cf090e;
+  }
+
+  a.anchor {
+    display: block;
+    position: relative;
+    top: -60px;
+    visibility: hidden;
+  }
+
+  text, h3 {
+    font-weight: 300;
+  }
+
+  h1 {
+    text-transform: uppercase;
+    font-weight: 400;
+    color: #cf090e;
+    font-size: 2em;
+  }
+
+  h3, h4 {
+    text-align: center;
+  }
+
+  h4 {
+    font-weight: 200 !important;
+  }
+
+  #sketch-carousel {
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .carousel-inner .item img {
+    margin-left: auto;
+    margin-right: auto;
+    height: 500px;
+  }
+
+  /* Map styles. */
   .background {
     fill: transparent;
     pointer-events: all;
-  }
-
-  body {
-    background: #fdf1e2;
   }
 
   .map-layer {
@@ -23,41 +110,299 @@
     pointer-events:none;
   }
 
-  text {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-weight: 300;
-  }
-
   text.big-text {
     font-size: 30px;
     font-weight: 400;
   }
   </style>
 </head>
-<body>
+<body data-spy="scroll" data-target="#navbar" data-offset="50">
+  <nav class="navbar navbar-default navbar-fixed-top" id="navbar">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed"
+                data-toggle="collapse" data-target="#nav"
+                aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <span class="navbar-brand" href="#">DS4200 Final Project</span>
+      </div>
+      <div id="nav" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav" role="tablist">
+          <li>
+            <a href="#final-viz">Visualizations</a>
+          </li>
+          <li>
+            <a href="#motivation">Motivation</a>
+          </li>
+          <li>
+            <a href="#task-analysis">Task Analysis</a>
+          </li>
+          <li>
+            <a href="#data">Data</a>
+          </li>
+          <li>
+            <a href="#design-process">Design Process</a>
+          </li>
+          <li>
+            <a href="#analysis">Data Analysis</a>
+          </li>
+          <li>
+            <a href="#conclusion">Conclusion</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
   <div class="container">
     <div class="row">
-      <div class="col-md-6">
-        <svg id="map"></svg>
+      <div class="col-md-12">
+        <a class="anchor" id="final-viz"></a><h1>Visualizations</h1>
+        <div class="row">
+          <div class="col-md-6">
+            <h3>Service-Learning Partner Locations, 2013-2016</h3>
+            <h4 id="map-subtitle"></h4>
+            <svg id="map">
+              <rect class="background"></rect>
+              <g class="foreground">
+                <g class="map-layer"></g>
+                <g class="legend" transform="translate(250,500)">
+                  <linearGradient id="map-gradient">
+                    <stop offset="0%"></stop>
+                    <stop offset="100%"></stop>
+                  </linearGradient>
+                  <text class="title" x="0" y="10">Organization Count:</text>
+                  <rect x="0" y="15" width="200" height="20" fill="url(#map-gradient)"></rect>
+                  <text class="tick" x="0" y="50" text-anchor="middle"></text>
+                  <text class="tick" x="200" y="50" text-anchor="middle"></text>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <div class="col-md-6">
+            <h3>Service-Learning Student Roles, 2013-2016</h3>
+            <h4 id="bubbles-subtitle"></h4>
+            <svg id="bubbles">
+              <rect class="background"></rect>
+              <g class="foreground"></g>
+            </svg>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <p>
+              These visualizations were created during a Service-Learning
+              project for the
+              <a href="https://www.northeastern.edu/communityservice/">
+                Northeastern University Center of Community Service
+              </a>, as part of the course DS4200 Information Presentation and
+              Visualization. Read on below for more information about the process
+              of the project.
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6">
-        <svg id="bubbles"></svg>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <a class="anchor" id="motivation"></a><h1>Motivation</h1>
+        <p>
+          The NU Center of Community Service (CCS) is an on-campus organization that
+          links local non-profit organizations to students through service-learning (S-L)
+          projects. These projects can involve anything from technical support to
+          meal preparation to tutoring at after-school programs. CCS has collected
+          data on its S-L courses for many years, but has never undertaken an effort
+          to analyze or visualize their stockpile of information. Naturally, the S-L
+          staff would prefer to know of any interesting patterns in their course offerings
+          and community partnerships.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <a class="anchor" id="task-analysis"></a><h1>Task Analysis</h1>
+        <p>
+          We began our project by interviewing the directors of the S-L program
+          at CCS to idenfify the team's most pressing needs. Through our conversation,
+          it became obvious that the S-L team needed to a quick, manageable way
+          to find data about each partner organization and service learning opportunity,
+          as well as a way to analyze where S-L has the most room to grow. They
+          also had a desire to craft a bigger story from their data for external
+          audiences.
+        </p>
+        <p>
+          After the interview, we decided that while the S-L team was most in need
+          of a proper data-management solution, building such a tool would likely
+          be beyond the scope of our course. Instead, we set out to visualize the
+          distribution of S-L partner organizations across Boston's neighborhoods
+          and the breakdown of services provided by students in S-L courses. We
+          hoped that these visualizations could help the S-L team identify areas
+          for growth, as well as provide an attractive display others curious about
+          the program.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <a class="anchor" id="data"></a><h1>Data</h1>
+        <p>
+          Following our initial interview, the S-L team at CCS provided us with
+          information for around 200 S-L partner organizations and 4000 student
+          service records, covering the semesters from Fall 2013 to Fall 2016.
+          Organizations were listed once in the data if they had offered a S-L
+          project during any semester in the covered time range. Student records
+          were listed for every S-L class-per-semester a given student participated in.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <a class="anchor" id="design-process"></a><h1>Design Process</h1>
+        <p>
+          Based upon our task analysis and the provided data, we sketched out nine
+          potential visualizations.
+        </p>
+        <div id="sketch-carousel" class="carousel slide" data-ride="carousel">
+          <ol class="carousel-indicators">
+            <li data-target="#sketch-carousel" data-slide-to-"1" class="active"></li>
+            <li data-target="#sketch-carousel" data-slide-to-"2"></li>
+            <li data-target="#sketch-carousel" data-slide-to-"3"></li>
+            <li data-target="#sketch-carousel" data-slide-to-"4"></li>
+            <li data-target="#sketch-carousel" data-slide-to-"5"></li>
+            <li data-target="#sketch-carousel" data-slide-to-"6"></li>
+            <li data-target="#sketch-carousel" data-slide-to-"7"></li>
+            <li data-target="#sketch-carousel" data-slide-to-"8"></li>
+            <li data-target="#sketch-carousel" data-slide-to-"9"></li>
+          </ol>
+
+          <div class="carousel-inner" role="listbox">
+            <div class="item active">
+              <img src="img/1.jpg">
+            </div>
+            <div class="item">
+              <img src="img/2.jpg">
+            </div>
+            <div class="item">
+              <img src="img/3.jpg">
+            </div>
+            <div class="item">
+              <img src="img/4.jpg">
+            </div>
+            <div class="item">
+              <img src="img/5.jpg">
+            </div>
+            <div class="item">
+              <img src="img/6.jpg">
+            </div>
+            <div class="item">
+              <img src="img/7.jpg">
+            </div>
+            <div class="item">
+              <img src="img/8.jpg">
+            </div>
+            <div class="item">
+              <img src="img/9.jpg">
+            </div>
+          </div>
+
+          <a class="left carousel-control" href="#sketch-carousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" href="#sketch-carousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+        <p>
+          After laying out our ideas, we identified three favorites to follow up on.
+          First, we wanted to build an interactive map to show the spread of
+          service learning sites. Next, we wanted to include a bubble chart is to
+          display the breakdown of service learning roles held by students. Lastly,
+          we wanted to to include a search bar to allow users to browse through the
+          displayed data.
+        </p>
+        <p>
+          In our final visualization, we merged the interactive map and bubble
+          chart ideas. The search system was tabled, since building it properly
+          would have required more work than could be fit into our semester.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <a class="anchor" id="analysis"></a><h1>Data Analysis</h1>
+        <p>
+          After creating our visualization, we discovered a couple of interesting
+          insights. The majority of S-L partners are located in the Roxbury, Fenway,
+          and Downtown neighborhoods. Fenway might be misleading, however, because
+          the majority of partners there lie on or near Northeastern's campus.
+          There are surprisingly few S-L partners in Mission Hill, and more than
+          we expected in Jamaica Plain.
+        </p>
+        <p>
+          Within the bubble chart, the three largest categories of service provided
+          by students overall are "Tutor", "Activity Assistant", and "Consultant".
+          These three categories remain large when focused on any of the neighborhoods
+          with a significant number of S-L partner organizations, but their relative
+          proportions shift. For example, in Fenway there are far more Consultants
+          than either Activity Assistants or Tutors, while in Roxbury the opposite
+          is true. Jamaica plain has relatively few Tutors. Lastly, Downtown has
+          utilized few Activity Assistants.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <a class="anchor" id="conclusion"></a><h1>Conclusion</h1>
+        <p>
+          At the moment, our visualization allows users to focus on single neighborhoods
+          on the map and have the bubble chart auto-adapt. Just in our own testing,
+          this has enabled the discovery of interesting differences in the distribution
+          of S-L opportunities across Boston.
+        </p>
+        <p>
+          An obvious improvement would be to implement parallel functionality
+          for drilling into specific types of service. This would allow for a
+          finer-grained understanding of the distribution of services across
+          neighborhoods (for example, math tutors might be more prevalent in some
+          locations, while civics tutors dominate others). It would also allow for
+          more service-type-driven exploration of the data, so that users interested
+          in seeing the distribution of a single service type across all of Boston
+          will only need to click one bubble to see what they're interested in,
+          as opposed to clicking every neighborhood.
+        </p>
       </div>
     </div>
   </div>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+          crossorigin="anonymous"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script>
 
-  var width = 575,
-      height = 600,
-      centered;
+  /************************************/
+  /*****     Shared variables.    *****/
+  /************************************/
+  var width = 575, height = 600;
+  var defaultMapSubtitle = "Click a neighborhood to view specific organization locations",
+      defaultBubbleSubtitle = "Click a neighborhood to show only bubbles for that neighborhood";
 
-  // Define color scale
-  var color = d3.scaleLinear()
-    .domain([1, 20])
-    .clamp(true)
-    .range(['#f7fbff','#084594']);
+  var mapSubtitle = d3.select("#map-subtitle")
+    .text(defaultMapSubtitle);
+  var bubblesSubtitle = d3.select("#bubbles-subtitle")
+    .text(defaultBubbleSubtitle);
+
+  /************************************/
+  /*****    Map-only variables.   *****/
+  /************************************/
+  var mapCentered, mapData;
 
   var projection = d3.geoMercator()
     .scale(120000)
@@ -66,61 +411,184 @@
     .translate([width / 2, height / 2]);
 
   var path = d3.geoPath()
-    .projection(projection)
-    .pointRadius(1.5);
+    .projection(projection);
 
   // Set svg width & height
-  var map = d3.select('#map')
-    .attr('width', width)
-    .attr('height', height);
+  var map = d3.select("#map")
+    .attr("width", width)
+    .attr("height", height);
 
-  // Add background
-  map.append('rect')
-    .attr('class', 'background')
-    .attr('width', width)
-    .attr('height', height)
-    .on('click', clicked);
+  map.select("rect.background")
+    .attr("width", width)
+    .attr("height", height)
+    .on("click", mapClicked);
 
-  var g = map.append('g');
+  var mapFg = map.select(".foreground");
+  var mapLayer = mapFg.select(".map-layer");
 
-  var effectLayer = g.append('g')
-    .classed('effect-layer', true);
+  // Define color scale
+  var mapColor = d3.scaleLinear()
+    .range(["#f7fbff","#084594"]);
+  map.selectAll(".legend linearGradient stop")
+    .data(mapColor.range())
+    .attr("stop-color", function(d) { return d; });
 
-  var mapLayer = g.append('g')
-    .classed('map-layer', true);
+  // Get neighborhood"s number of organizations
+  function numOrgs(d){
+    if (!d.orgs) {
+      return 0;
+    } else if (!bubbleCentered) {
+      return d.orgs.length;
+    } else {
+      return d.orgs.filter(function(o) {
+        return $.inArray(bubbleCentered, o.main_services);
+      }).length;
+    }
+  }
 
-  var dummyText = g.append('text')
-    .classed('dummy-text', true)
-    .attr('x', 10)
-    .attr('y', 30)
-    .style('opacity', 0);
+  // Get province color
+  function fillFn(d){
+    return mapColor(numOrgs(d));
+  }
 
-  var bigText = g.append('text')
-    .classed('big-text', true)
-    .attr('x', 200)
-    .attr('y', 550);
+  // When pin is clicked, open the service learning organization's website in a new tab
+  function pinClicked(d) {
 
-  /** Build the map. **/
-  d3.json('data/orgs-by-neighborhood.json', function(error, mapData) {
+    if(d.website.substring(0,4)==="http") {
+      window.open(d.website);
+    }
+    else {
+      window.open("http://" + d.website);
+    }
+  }
+
+  // When map is clicked, zoom in and redraw the bubbles
+  function mapClicked(d) {
+    var x, y, k;
+
+    // Compute centroid of the selected path
+    if (d && mapCentered !== d & d.orgs.length!==0) {
+      // Zoom in to view the neighborhood.
+      // Set the zoom scale based on the size of the neighborhood.
+      var centroid = path.centroid(d.borders),
+          neighborhoodBounds = path.bounds(d.borders),
+          xrange = neighborhoodBounds[1][0] - neighborhoodBounds[0][0],
+          yrange = neighborhoodBounds[1][1] - neighborhoodBounds[0][1];
+
+      x = centroid[0];
+      y = centroid[1];
+      k = xrange > yrange ? (width*.9)/xrange : (height*.9)/yrange;
+      mapCentered = d;
+    } else {
+      x = width / 2;
+      y = height / 2;
+      k = 1;
+      mapCentered = null;
+    }
+
+    // Highlight the mapClicked province
+    mapLayer.selectAll("path")
+      .style("fill", function(d) {
+        if (mapCentered) {
+          return d === mapCentered ? "white" : "#d9d9d9";
+        } else {
+          return fillFn(d);
+        }
+      });
+
+    // Zoom
+    mapFg.transition()
+      .duration(750)
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+
+    // Draw pins for organization locations in the selected neighborhood.
+    if (mapCentered) {
+      path.pointRadius(3 / k);
+      var dots = mapFg.selectAll(".pin").data(d.orgs,function(d){ return d.id });
+
+      // Remove any dots on the map from some other neighborhood.
+      dots.exit().remove();
+
+      // Draw the new dots.
+      dots.enter().append("path")
+        .attr("d", function(d){
+          return path({ type: "Point", coordinates: [parseFloat(d.lng), parseFloat(d.lat)] });
+        })
+        .attr("class", "pin")
+        .attr("fill", "blue")
+        .on('click', pinClicked)
+        .append("title")
+          .text(function(d){ return d.name + "\n" + d.address + "\n" + "(Click to open website)"});
+
+      mapSubtitle.text(d.orgs.length + " organizations in " + d.name);
+      bubblesSubtitle.text("Distribution for " + d.name);
+    }
+    else {
+      path.pointRadius(null);
+      mapFg.selectAll(".pin").remove();
+      mapSubtitle.text(defaultMapSubtitle);
+      bubblesSubtitle.text(defaultBubbleSubtitle);
+    }
+
+    drawBubbles();
+  }
+
+  function mouseover(d) {
+    // Highlight hovered province
+    d3.select(this).style("fill", function (d) {
+      if (mapCentered && d === mapCentered) {
+        return "white";
+      } else if(d.orgs.length !== 0){
+        return "#fee391";
+      }
+      else {
+        return d.orgs.fill;
+      }
+    });
+  }
+
+  function mouseout(d) {
+    // Reset province color
+    mapLayer.selectAll("path")
+      .style("fill", function(d){
+        if (mapCentered) {
+          return d === mapCentered ? "white" : "#d9d9d9";
+        } else {
+          return fillFn(d);
+        }
+      });
+  }
+
+  function drawMap() {
     // Update color scale domain based on data
-    color.domain([0, d3.max(mapData, numOrgs)]);
+    mapColor.domain([0, d3.max(mapData, numOrgs)]);
+    map.selectAll("text.tick")
+      .data(mapColor.domain())
+      .text(function(d) { return d; })
 
     // Draw each province as a path
-    mapLayer.selectAll('path')
+    mapLayer.selectAll("path")
       .data(mapData)
-      .enter().append('path')
-        .attr('d', function(d) {
-          return path(d['borders']);
+      .enter().append("path")
+        .attr("d", function(d) {
+          return path(d["borders"]);
         })
-        .attr('vector-effect', 'non-scaling-stroke')
-        .style('fill', fillFn)
-        .on('mouseover', mouseover)
-        .on('mouseout', mouseout)
-        .on('click', clicked);
-  });
+        .attr("vector-effect", "non-scaling-stroke")
+        .style("fill", fillFn)
+        .style("cursor", function(d){ return d.orgs.length===0 ? "not-allowed" : "pointer"})
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", mapClicked);
+  }
+
+  /************************************/
+  /*****  Bubble-only variables.  *****/
+  /************************************/
+  var bubbleCentered, bubbleData;
 
   var format = d3.format(",d");
-  var color2 = d3.scaleOrdinal().range(d3.schemeCategory20c);
+  var bubbleColor = d3.scaleOrdinal().range(d3.schemeCategory20c);
+  var bubbleTitleThreshold = 25;
 
   var bubble = d3.pack()
     .size([width, height])
@@ -128,59 +596,107 @@
 
   var bubbles = d3.select("#bubbles")
     .attr("width", width)
+    .attr("height", height);
+
+  bubbles.select("rect.background")
+    .attr("width", width)
     .attr("height", height)
-    .attr("class", "bubble");
+    .on("click", bubblesClicked);
 
-  var tooltip = d3.select("body")
-    .append("div")
-    .style("position", "absolute")
-    .style("z-index", "10")
-    .style("visibility", "hidden")
-    .style("color", "white")
-    .style("padding", "8px")
-    .style("background-color", "rgba(0, 0, 0, 0.75)")
-    .style("border-radius", "6px")
-    .style("font", "12px sans-serif")
-    .text("tooltip");
+  var bubbleFg = bubbles.select(".foreground");
 
-  /** Build the bubbles. **/
-  d3.json("data/courses-by-service.json", function(error, classes) {
-    if (error) throw error;
+  function bubbleMouseover(d) {
+    // Highlight hovered circle
+    d3.select(this).select("circle").style('fill', function(d) {
+      return d.children.filter(function(c){
+        return c.data.child_type==='subtype'
+      }).length !== 0 ? '#fee391' : bubbleColor(d.package);
+    });
+  }
 
-    var root = d3.hierarchy(classes)
-      .sum(function(d) {
-        return d.volunteers ? d.volunteers : d.size;
-      })
-      .each(function(d) {
-        var name;
-        if (name = d.data.name) {
-          var i = name.lastIndexOf(".");
-          d.id = name.replace(" ", "-");
-          d.package = name.slice(0, i);
-          d.class = name.slice(i + 1);
-        }
-      });
+  function bubbleMouseout(d){
+    d3.select(this).select("circle").style('fill', bubbleColor(d.package));
+  }
 
-    var node = bubbles.selectAll(".node")
-      .data(bubble(root).children/*.leaves()*/)
-      .enter().append("g")
-        .attr("class", "node")
+  function drawBubblesOverview(data) {
+    var nodes = bubbleFg.selectAll(".node")
+      .data(data, function(d) { return d.id; });
+
+    nodes.exit().selectAll("circle")
+      .transition()
+      .duration(750)
+        .attr("r", 0);
+    nodes.exit().selectAll("title")
+      .text("");
+
+    nodes.transition()
+      .duration(750)
         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
-    node.append("circle")
+    nodes.selectAll("circle")
+      .data(data, function(d) { return d.id; })
+      /*.style("cursor", function(d){
+        return d.children.filter(function(c){
+          return c.data.child_type === 'subtype'
+        }).length === 0 ? "not-allowed" : "pointer"
+      })*/
+      .transition()
+        .duration(750)
+          .attr("r", function(d) { return d.r; });
+
+    nodes.selectAll("title")
+      .data(data, function(d) { return d.id; })
+      .text(function(d){
+        return (d.r < bubbleTitleThreshold ? d.class + "\n" : "") +
+               d.value + " Volunteer" + (d.value == 1 ? "" : "s");
+      });
+
+    nodes.selectAll("text")
+      .data(data, function(d) { return d.id; })
+      .selectAll("tspan")
+        .data(function(d) {
+          return d.class.split(/(?=[A-Z][^A-Z])/g).map(function(ts) {
+            return { text: ts, r: d.r };
+          });
+        })
+        .transition()
+          .duration(750)
+            .attr("font-size", function(d) { return d.r / 3; })
+            .attr("y", function(d, i, nodes) { return (5 * d.r / 12) + (i - nodes.length / 2 - 0.5) * (d.r / 3); })
+            .text(function(d) { return d.r > bubbleTitleThreshold ? d.text : ""; });
+
+    var newNodes = nodes.enter()
+      .append("g")
+        .attr("class", "node")
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+        /*.on('click', bubblesClicked)
+        .on('mouseover', bubbleMouseover)
+        .on('mouseout', bubbleMouseout)
+        .style("cursor", function(d){
+          return d.children.filter(function(c){
+            return c.data.child_type === 'subtype'
+          }).length === 0 ? "not-allowed" : "pointer"
+        })*/;
+
+    newNodes.append("title")
+      .text(function(d){
+        return (d.r < bubbleTitleThreshold ? d.class + "\n" : "") +
+               d.value + " Volunteer" + (d.value == 1 ? "" : "s");
+      });
+
+    newNodes.append("circle")
       .attr("id", function(d) { return d.id; })
       .attr("r", function(d) { return d.r; })
-      .style("fill", function(d) { return color2(d.package); });
+      .style("fill", function(d) { return bubbleColor(d.package); });
 
-    node.append("clipPath")
+    newNodes.append("clipPath")
       .attr("id", function(d) { return "clip-" + d.id; })
       .append("use")
         .attr("xlink:href", function(d) { return "#" + d.id; });
 
-    node.append("text")
+    newNodes.append("text")
       .attr("text-anchor", "middle")
       .attr("clip-path", function(d) { return "url(#clip-" + d.id + ")"; })
-      .style("font-size", function(d) { return d.r / 3; })
       .style("font-weight", 350)
       .selectAll("tspan")
         .data(function(d) {
@@ -191,142 +707,116 @@
         .enter().append("tspan")
           .attr("x", 0)
           .attr("y", function(d, i, nodes) { return (5 * d.r / 12) + (i - nodes.length / 2 - 0.5) * (d.r / 3); })
-          .text(function(d) { return d.r > 25 ? d.text : ""; });
-
-    node.append("title")
-        .text(function(d) { return d.id + "\n" + format(d.value); });
-  });
-
-  // Get province name
-  function nameFn(d){
-    return d ? d.name : null;
+          .attr("font-size", function(d) { return d.r / 3; })
+          .text(function(d) { return d.r > bubbleTitleThreshold ? d.text : ""; });
   }
 
-  // Get province name length
-  function nameLength(d){
-    var n = nameFn(d);
-    return n ? n.length : 0;
+  function drawBubblesDetail() {
+    console.log(bubbleCentered);
   }
 
-    // Get list of neighborhood orgs
-  function numFn(d){
-    return d ? d.orgs : null;
+  function drawBubbles() {
+    var filteredData;
+    if (mapCentered) {
+      filteredData = {
+        name: bubbleData.name,
+        children: bubbleData.children.map(function(c) {
+          return {
+            name: c.name,
+            children: c.children.filter(function(c2) {
+              return c2.child_type === 'subtype' || c2.neighborhood === mapCentered.name;
+            }).map(function(c2) {
+              if (c2.child_type !== 'subtype') {
+                return c2;
+              } else {
+                return {
+                  name: c2.name,
+                  child_type: c2.child_type,
+                  children: c2.children.filter(function(c3) {
+                    return c3.neighborhood === mapCentered.name;
+                  })
+                };
+              }
+            }).filter(function(c2) {
+              return !c2.children || c2.children.length > 0;
+            })
+          };
+        }).filter(function(c) {
+          return !c.children || c.children.length > 0;
+        })
+      };
+    } else {
+      filteredData = bubbleData;
+    }
+
+    var root = d3.hierarchy(filteredData)
+      .each(function(d) {
+        var name;
+        if (name = d.data.name) {
+          var i = name.lastIndexOf(".");
+          d.id = name.replace(/\s+/g, "-");
+          d.package = i < 0 ? name : name.slice(0, i);
+          d.class = name.slice(i + 1);
+        }
+      })
+      .sum(function(d) {
+        return d.volunteers ? d.volunteers : 0;
+      });
+
+    var data = bubble(root).children;
+
+    /*if (bubbleCentered) {
+      bubbleCentered = data.find(function(d) {
+        return d.id === bubbleCentered.id;
+      });
+      drawBubblesDetail();
+    } else {*/
+      drawBubblesOverview(data);
+    //}
   }
 
-  // Get neighborhood's number of organizations
-  function numOrgs(d){
-    var n = numFn(d);
-    return n ? n.length : 0;
-  }
-
-  // Get province color
-  function fillFn(d){
-    return color(numOrgs(d));
-  }
-
-  // When clicked, zoom in
-  function clicked(d) {
-    bigText.text('');
-
+  // When the bubbles are clicked, zoom in and redraw the bubbles
+  function bubblesClicked(d) {
     var x, y, k;
 
     // Compute centroid of the selected path
-    if (d && centered !== d) {
-      var centroid = path.centroid(d.borders);
-      x = centroid[0];
-      y = centroid[1];
-      // zoom in based on the size of the neighborhood
-      xrange = path.bounds(d.borders)[1][0] - path.bounds(d.borders)[0][0];
-      yrange = path.bounds(d.borders)[1][1] - path.bounds(d.borders)[0][1];
-      k = xrange > yrange ? (height*.75)/xrange : (height*.75)/yrange;
-
-      // create the pins based on the size of the neighborhood
-      path.pointRadius(xrange > yrange ? xrange/75 : yrange/75);
-
-      centered = d;
+    if (d && bubbleCentered !== d && d.children.filter(function(c){ return c.data.child_type==='subtype' }).length !== 0) {
+      // Zoom in to view the neighborhood.
+      // Set the zoom scale based on the size of the neighborhood.
+      x = d.x
+      y = d.y
+      k = width/(2*d.r);
+      bubbleCentered = d;
     } else {
       x = width / 2;
       y = height / 2;
       k = 1;
-      centered = null;
+      bubbleCentered = null;
     }
-
-    // Highlight the clicked province
-    mapLayer.selectAll('path')
-      .style('fill', function(d) {
-        if (centered) {
-          return d === centered ? 'white' : '#d9d9d9';
-        } else {
-          return fillFn(d);
-        }
-      });
 
     // Zoom
-    g.transition()
+    bubbleFg.transition()
       .duration(750)
-      .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')scale(' + k + ')translate(' + -x + ',' + -y + ')');
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
 
-
-    // place pins
-    if(centered){
-      var dots = g.selectAll(".pin")
-        .data(d.orgs,function(d){ return d.id });
-      dots.enter().append("path")
-        .attr("d", function(d){
-          return path({ type: 'Point', coordinates: [parseFloat(d.lng), parseFloat(d.lat)] });
-        })
-        .attr("class", "pin")
-        .attr("fill", "blue");
-      dots.exit().remove();
-    }
-    else {
-      g.selectAll(".pin").remove()
+    drawMap();
+    if (bubbleCentered) {
+      drawBubblesDetail();
     }
   }
 
-  function mouseover(d) {
-    // Highlight hovered province
-    d3.select(this).style('fill', function (d) {
-      if (centered && d === centered) {
-        return 'white';
-      } else {
-        return '#fee391';
-      }
-    });
-
-    // Draw neighborhood name
-    if (!centered) {
-        bigText.text(nameFn(d));
-    }
-  }
-
-  function mouseout(d){
-    // Reset province color
-    mapLayer.selectAll('path')
-      .style('fill', function(d){
-        if (centered) {
-          return d === centered ? 'white' : '#d9d9d9';
-        } else {
-          return fillFn(d);
-        }
-      });
-
-    // Clear neighborhood name
-    bigText.text('');
-  }
-
-  // Returns a flattened hierarchy containing all leaf nodes under the root.
-  function classes(root) {
-    var classes = [];
-
-    function recurse(name, node) {
-      if (node.children) node.children.forEach(function(child) { recurse(node.name, child); });
-      else classes.push({packageName: name, className: node.name, value: node.size});
-    }
-
-    recurse(null, root);
-    return {children: classes};
-  }
-
+  /************************************/
+  /*****    Initial plot setup.   *****/
+  /************************************/
+  d3.json("data/orgs-by-neighborhood.json", function(error, data) {
+    if (error) throw error;
+    mapData = data;
+    drawMap();
+  });
+  d3.json("data/courses-by-service.json", function(error, data) {
+    if (error) throw error;
+    bubbleData = data;
+    drawBubbles();
+  });
   </script>
 </body>
