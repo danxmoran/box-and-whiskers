@@ -416,12 +416,6 @@
         .duration(750)
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
 
-      $('.neighborhood[data-toggle="tooltip"]').tooltip({
-        container: "body",
-        html: true,
-        placement: neighborhoodTooltipPos
-      });
-
       // Draw pins for organization locations in the selected neighborhood.
       if (mapCentered) {
         path.pointRadius(3 / k);
@@ -446,7 +440,16 @@
           })
           .attr("data-toggle", "tooltip");
 
-        $(this).tooltip('destroy');
+        $(this).tooltip("destroy");
+        var prevClicked = $('.neighborhood.disabled[data-toggle="tooltip"]');
+        prevClicked.tooltip({
+          container: "body",
+          html: true,
+          placement: neighborhoodTooltipPos
+        });
+        prevClicked.removeClass("disabled");
+
+        $(this).addClass("disabled");
         $('.pin[data-toggle="tooltip"]').tooltip({ container: "body", html: true });
 
         mapSubtitle.text(d.orgs.length + " organization" + (d.orgs.length === 1 ? "" : "s") + " in " + d.name + " (Click again to un-zoom)");
@@ -454,8 +457,14 @@
       } else {
         // Clean up and zoom out.
         path.pointRadius(null);
-        $('.pin[data-toggle="tooltip"]').tooltip('destroy');
         mapFg.selectAll(".pin").remove();
+        var prevClicked = $('.neighborhood.disabled[data-toggle="tooltip"]');
+        prevClicked.tooltip({
+          container: "body",
+          html: true,
+          placement: neighborhoodTooltipPos
+        });
+        prevClicked.removeClass("disabled");
         mapSubtitle.text(defaultMapSubtitle);
         bubblesSubtitle.text(defaultBubbleSubtitle);
       }
@@ -557,14 +566,15 @@
     var nodes = bubbleFg.selectAll(".node")
       .data(data, function(d) { return d.id; });
 
-    $('.node[data-toggle="tooltip"]').tooltip('destroy');
-
     nodes.exit().selectAll("circle")
       .transition()
       .duration(750)
         .attr("r", 0)
         .attr("data-original-title", null)
-        .attr("data-toggle", null);
+        .attr("data-toggle", null)
+        .each(function() {
+          $(this).tooltip("destroy");
+        });
 
     nodes.attr("data-original-title", function(d) {
         return (d.r < bubbleTitleThreshold ? "<span>" + d.class + "</span><br />" : "") +
