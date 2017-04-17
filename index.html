@@ -4,119 +4,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>DS4200 Final Project</title>
 
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin="anonymous" rel="stylesheet">
-  <style>
-
-  /* Page styles. */
-  body {
-    padding-top: 50px;
-    background: #e7e7e7;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  }
-
-  #navbar {
-    background-color: #cf090e;
-    border-bottom: 1px solid #bcb5ab;
-  }
-
-  .navbar-default .navbar-brand,
-  .navbar-default .navbar-brand:hover,
-  .navbar-default .navbar-nav li a {
-    color: #fff;
-  }
-
-  .navbar-default .navbar-toggle .icon-bar {
-    background-color: #fff;
-  }
-
-  .navbar-default .navbar-nav .active a {
-    color: black;
-  }
-
-  .container > .row {
-    margin-bottom: 20px;
-  }
-
-  .container > .row:first-of-type {
-    margin-top: 20px;
-  }
-
-  .container > .row > .col-md-12 {
-    background-color: white;
-    border-top: 15px solid #cf090e;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-bottom: 30px;
-  }
-
-  a {
-    color: #cf090e;
-  }
-
-  a.anchor {
-    display: block;
-    position: relative;
-    top: -60px;
-    visibility: hidden;
-  }
-
-  text, h3 {
-    font-weight: 300;
-  }
-
-  h1 {
-    text-transform: uppercase;
-    font-weight: 400;
-    color: #cf090e;
-    font-size: 2em;
-  }
-
-  h3, h4 {
-    text-align: center;
-  }
-
-  h4 {
-    font-weight: 200 !important;
-  }
-
-  #sketch-carousel {
-    width: 75%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-
-  .carousel-inner .item img {
-    margin-left: auto;
-    margin-right: auto;
-    height: 500px;
-  }
-
-  /* Map styles. */
-  .background {
-    fill: transparent;
-    pointer-events: all;
-  }
-
-  .map-layer {
-    fill: #fff;
-    stroke: #aaa;
-  }
-
-  .effect-layer {
-    pointer-events:none;
-  }
-
-  text.big-text {
-    font-size: 30px;
-    font-weight: 400;
-  }
-  </style>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/style.css" rel="stylesheet">
 </head>
-<body data-spy="scroll" data-target="#navbar" data-offset="50">
+<body data-spy="scroll" data-target="#nav">
   <nav class="navbar navbar-default navbar-fixed-top" id="navbar">
     <div class="container">
       <div class="navbar-header">
@@ -158,7 +49,7 @@
     </div>
   </nav>
 
-  <div class="container">
+  <div id="main-content" class="container">
     <div class="row">
       <div class="col-md-12">
         <a class="anchor" id="final-viz"></a><h1>Visualizations</h1>
@@ -169,6 +60,7 @@
             <svg id="map">
               <rect class="background"></rect>
               <g class="foreground">
+                <g class="tooltip-anchor"></g>
                 <g class="map-layer"></g>
                 <g class="legend" transform="translate(250,500)">
                   <linearGradient id="map-gradient">
@@ -195,13 +87,10 @@
         <div class="row">
           <div class="col-md-12">
             <p>
-              These visualizations were created during a Service-Learning
-              project for the
-              <a href="https://www.northeastern.edu/communityservice/">
-                Northeastern University Center of Community Service
-              </a>, as part of the course DS4200 Information Presentation and
-              Visualization. Read on below for more information about the process
-              of the project.
+              These visualizations were created during a Service-Learning project for the
+              <a href="https://www.northeastern.edu/communityservice/">Northeastern University Center of Community Service</a>,
+              as part of the course DS4200 Information Presentation and Visualization.
+              Read on below for more information about the process of the project.
             </p>
           </div>
         </div>
@@ -211,14 +100,21 @@
       <div class="col-md-12">
         <a class="anchor" id="motivation"></a><h1>Motivation</h1>
         <p>
-          The NU Center of Community Service (CCS) is an on-campus organization that
-          links local non-profit organizations to students through service-learning (S-L)
-          projects. These projects can involve anything from technical support to
-          meal preparation to tutoring at after-school programs. CCS has collected
-          data on its S-L courses for many years, but has never undertaken an effort
-          to analyze or visualize their stockpile of information. Naturally, the S-L
-          staff would prefer to know of any interesting patterns in their course offerings
-          and community partnerships.
+          The NU Center of Community Service (CCS) is a department within Northeastern's
+          division of City and Community Affairs. CCS runs many programs, one of
+          which is Service-Learning (S-L). S-L is a form of experiential learning
+          for students and a teaching tool for faculty that integrates academics
+          and service to meet classroom and community goals. S-L projects can involve
+          anything from technical support to meal preparation to tutoring at after-school
+          programs. Ultimately, the S-L team aims to enrich the academic experience of,
+          and inspire lifelong community engagement by, NU students, while strenghtening
+          the University's local and global communities.
+        </p>
+        <p>
+          CCS has collected data on its S-L courses for many years, but has never
+          undertaken an effort to analyze or visualize their stockpile of information.
+          Naturally, the S-L staff would prefer to know of any interesting patterns
+          in their course offerings and community partnerships.
         </p>
       </div>
     </div>
@@ -268,15 +164,15 @@
         </p>
         <div id="sketch-carousel" class="carousel slide" data-ride="carousel">
           <ol class="carousel-indicators">
-            <li data-target="#sketch-carousel" data-slide-to-"1" class="active"></li>
-            <li data-target="#sketch-carousel" data-slide-to-"2"></li>
-            <li data-target="#sketch-carousel" data-slide-to-"3"></li>
-            <li data-target="#sketch-carousel" data-slide-to-"4"></li>
-            <li data-target="#sketch-carousel" data-slide-to-"5"></li>
-            <li data-target="#sketch-carousel" data-slide-to-"6"></li>
-            <li data-target="#sketch-carousel" data-slide-to-"7"></li>
-            <li data-target="#sketch-carousel" data-slide-to-"8"></li>
-            <li data-target="#sketch-carousel" data-slide-to-"9"></li>
+            <li data-target="#sketch-carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#sketch-carousel" data-slide-to="1"></li>
+            <li data-target="#sketch-carousel" data-slide-to="2"></li>
+            <li data-target="#sketch-carousel" data-slide-to="3"></li>
+            <li data-target="#sketch-carousel" data-slide-to="4"></li>
+            <li data-target="#sketch-carousel" data-slide-to="5"></li>
+            <li data-target="#sketch-carousel" data-slide-to="6"></li>
+            <li data-target="#sketch-carousel" data-slide-to="7"></li>
+            <li data-target="#sketch-carousel" data-slide-to="8"></li>
           </ol>
 
           <div class="carousel-inner" role="listbox">
@@ -376,14 +272,18 @@
           will only need to click one bubble to see what they're interested in,
           as opposed to clicking every neighborhood.
         </p>
+        <p>
+          Another useful extension to our visualization would be to allow the
+          displayed data to be filtered by time. This would allow users to identify
+          trends of growth and decline in the number of S-L opportunities in each
+          neighborhood and type of service.
+        </p>
       </div>
     </div>
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-          crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script>
 
@@ -425,6 +325,8 @@
 
   var mapFg = map.select(".foreground");
   var mapLayer = mapFg.select(".map-layer");
+  var mapTooltipAnchor = map.select(".tooltip-anchor")
+    .attr("transform", "translate(" + width + ",0)");
 
   // Define color scale
   var mapColor = d3.scaleLinear()
@@ -435,15 +337,7 @@
 
   // Get neighborhood"s number of organizations
   function numOrgs(d){
-    if (!d.orgs) {
-      return 0;
-    } else if (!bubbleCentered) {
-      return d.orgs.length;
-    } else {
-      return d.orgs.filter(function(o) {
-        return $.inArray(bubbleCentered, o.main_services);
-      }).length;
-    }
+    return d.orgs ? d.orgs.length : 0;
   }
 
   // Get province color
@@ -462,75 +356,112 @@
     }
   }
 
+  function neighborhoodTooltipPos(tip, element) {
+    var data = d3.select(element).datum();
+    var centroid = path.centroid(data.borders);
+    if (mapCentered) {
+      var centeredCentroid = path.centroid(mapCentered.borders);
+      var centeredBbox = path.bounds(mapCentered.borders);
+      if (centroid[1] < centeredBbox[0][1]) return "bottom";
+      else if (centroid[1] > centeredBbox[1][1]) return "top";
+      else if (centroid[0] > centeredCentroid[0]) return "left";
+      else return "right";
+      return { top: top, left: left };
+    } else {
+      if (centroid[0] < width / 2) {
+        return "right";
+      } else {
+        return "left";
+      }
+    }
+  }
+
   // When map is clicked, zoom in and redraw the bubbles
   function mapClicked(d) {
     var x, y, k;
 
-    // Compute centroid of the selected path
-    if (d && mapCentered !== d & d.orgs.length!==0) {
+    if(d && d.orgs.length !== 0) {
+      // Compute centroid of the selected path
       // Zoom in to view the neighborhood.
-      // Set the zoom scale based on the size of the neighborhood.
-      var centroid = path.centroid(d.borders),
-          neighborhoodBounds = path.bounds(d.borders),
-          xrange = neighborhoodBounds[1][0] - neighborhoodBounds[0][0],
-          yrange = neighborhoodBounds[1][1] - neighborhoodBounds[0][1];
+      if (d && mapCentered !== d & d.orgs.length !== 0) {
+        // Set the zoom scale based on the size of the neighborhood.
+        var centroid = path.centroid(d.borders),
+            neighborhoodBounds = path.bounds(d.borders),
+            xrange = neighborhoodBounds[1][0] - neighborhoodBounds[0][0],
+            yrange = neighborhoodBounds[1][1] - neighborhoodBounds[0][1];
 
-      x = centroid[0];
-      y = centroid[1];
-      k = xrange > yrange ? (width*.9)/xrange : (height*.9)/yrange;
-      mapCentered = d;
-    } else {
-      x = width / 2;
-      y = height / 2;
-      k = 1;
-      mapCentered = null;
-    }
+        x = centroid[0];
+        y = centroid[1];
+        k = xrange > yrange ? (width*.9)/xrange : (height*.9)/yrange;
+        mapCentered = d;
+      } else {
+        x = width / 2;
+        y = height / 2;
+        k = 1;
+        mapCentered = null;
+      }
 
-    // Highlight the mapClicked province
-    mapLayer.selectAll("path")
-      .style("fill", function(d) {
-        if (mapCentered) {
-          return d === mapCentered ? "white" : "#d9d9d9";
-        } else {
-          return fillFn(d);
-        }
+      // Highlight the mapClicked province
+      mapLayer.selectAll("path")
+        .style("fill", function(d) {
+          if (mapCentered) {
+            return d === mapCentered ? "white" : "#d9d9d9";
+          } else {
+            return fillFn(d);
+          }
+        });
+
+      // Zoom
+      mapFg.transition()
+        .duration(750)
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+
+      $('.neighborhood[data-toggle="tooltip"]').tooltip({
+        container: "body",
+        html: true,
+        placement: neighborhoodTooltipPos
       });
 
-    // Zoom
-    mapFg.transition()
-      .duration(750)
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+      // Draw pins for organization locations in the selected neighborhood.
+      if (mapCentered) {
+        path.pointRadius(3 / k);
+        var dots = mapFg.selectAll(".pin").data(d.orgs,function(d){ return d.id });
 
-    // Draw pins for organization locations in the selected neighborhood.
-    if (mapCentered) {
-      path.pointRadius(3 / k);
-      var dots = mapFg.selectAll(".pin").data(d.orgs,function(d){ return d.id });
+        // Remove any dots on the map from some other neighborhood.
+        dots.exit().remove();
 
-      // Remove any dots on the map from some other neighborhood.
-      dots.exit().remove();
+        // Draw the new dots.
+        dots.enter().append("path")
+          .attr("d", function(d){
+            return path({ type: "Point", coordinates: [parseFloat(d.lng), parseFloat(d.lat)] });
+          })
+          .attr("class", "pin")
+          .attr("fill", "blue")
+          .on('click', pinClicked)
+          .on('mouseover', function(d){ d3.select(this).style("fill", "#fee391") })
+          .on('mouseout', function(d){ d3.select(this).style("fill", "blue") })
+          .style('cursor', 'pointer')
+          .attr("data-original-title", function(d) {
+            return "<span>" + d.name + "</span><br /><span>" + d.address + "</span><br /><span>(Click to open website)</span>"
+          })
+          .attr("data-toggle", "tooltip");
 
-      // Draw the new dots.
-      dots.enter().append("path")
-        .attr("d", function(d){
-          return path({ type: "Point", coordinates: [parseFloat(d.lng), parseFloat(d.lat)] });
-        })
-        .attr("class", "pin")
-        .attr("fill", "blue")
-        .on('click', pinClicked)
-        .append("title")
-          .text(function(d){ return d.name + "\n" + d.address + "\n" + "(Click to open website)"});
+        $(this).tooltip('destroy');
+        $('.pin[data-toggle="tooltip"]').tooltip({ container: "body", html: true });
 
-      mapSubtitle.text(d.orgs.length + " organizations in " + d.name);
-      bubblesSubtitle.text("Distribution for " + d.name);
+        mapSubtitle.text(d.orgs.length + " organization" + (d.orgs.length === 1 ? "" : "s") + " in " + d.name + " (Click again to un-zoom)");
+        bubblesSubtitle.text("Distribution for " + d.name);
+      } else {
+        // Clean up and zoom out.
+        path.pointRadius(null);
+        $('.pin[data-toggle="tooltip"]').tooltip('destroy');
+        mapFg.selectAll(".pin").remove();
+        mapSubtitle.text(defaultMapSubtitle);
+        bubblesSubtitle.text(defaultBubbleSubtitle);
+      }
+
+      drawBubbles();
     }
-    else {
-      path.pointRadius(null);
-      mapFg.selectAll(".pin").remove();
-      mapSubtitle.text(defaultMapSubtitle);
-      bubblesSubtitle.text(defaultBubbleSubtitle);
-    }
-
-    drawBubbles();
   }
 
   function mouseover(d) {
@@ -540,9 +471,8 @@
         return "white";
       } else if(d.orgs.length !== 0){
         return "#fee391";
-      }
-      else {
-        return d.orgs.fill;
+      } else {
+        return d3.select(this).style("fill");
       }
     });
   }
@@ -567,18 +497,34 @@
       .text(function(d) { return d; })
 
     // Draw each province as a path
-    mapLayer.selectAll("path")
+    mapLayer.selectAll(".neighborhood")
       .data(mapData)
       .enter().append("path")
         .attr("d", function(d) {
           return path(d["borders"]);
         })
         .attr("vector-effect", "non-scaling-stroke")
+        .attr("class", "neighborhood")
         .style("fill", fillFn)
-        .style("cursor", function(d){ return d.orgs.length===0 ? "not-allowed" : "pointer"})
+        .style("cursor", function(d) {
+          return d.orgs.length === 0 ? "not-allowed" : "pointer";
+        })
         .on("mouseover", mouseover)
         .on("mouseout", mouseout)
-        .on("click", mapClicked);
+        .on("click", mapClicked)
+        .attr("data-original-title", function(d) {
+          var num = numOrgs(d);
+          return "<span>" + d.name + "</span><br /><span>" + num +
+                 " Organization" + (num === 1 ? "" : "s") + "</span>" +
+                 (num === 0 ? "" : "<br /><span>(Click to see org locations)</span>");
+        })
+        .attr("data-toggle", "tooltip");
+
+    $('.neighborhood[data-toggle="tooltip"]').tooltip({
+      container: "body",
+      html: true,
+      placement: neighborhoodTooltipPos
+    });
   }
 
   /************************************/
@@ -589,9 +535,10 @@
   var format = d3.format(",d");
   var bubbleColor = d3.scaleOrdinal().range(d3.schemeCategory20c);
   var bubbleTitleThreshold = 25;
+  var bubbleMargin = 20;
 
   var bubble = d3.pack()
-    .size([width, height])
+    .size([width - bubbleMargin, height - bubbleMargin])
     .padding(1.5);
 
   var bubbles = d3.select("#bubbles")
@@ -600,56 +547,40 @@
 
   bubbles.select("rect.background")
     .attr("width", width)
-    .attr("height", height)
-    .on("click", bubblesClicked);
+    .attr("height", height);
 
-  var bubbleFg = bubbles.select(".foreground");
-
-  function bubbleMouseover(d) {
-    // Highlight hovered circle
-    d3.select(this).select("circle").style('fill', function(d) {
-      return d.children.filter(function(c){
-        return c.data.child_type==='subtype'
-      }).length !== 0 ? '#fee391' : bubbleColor(d.package);
-    });
-  }
-
-  function bubbleMouseout(d){
-    d3.select(this).select("circle").style('fill', bubbleColor(d.package));
-  }
+  var bubbleFg = bubbles.select(".foreground")
+    .attr("transform",
+          "translate(" + (bubbleMargin / 2) + "," + (bubbleMargin / 2) + ")");
 
   function drawBubblesOverview(data) {
     var nodes = bubbleFg.selectAll(".node")
       .data(data, function(d) { return d.id; });
 
+    $('.node[data-toggle="tooltip"]').tooltip('destroy');
+
     nodes.exit().selectAll("circle")
       .transition()
       .duration(750)
-        .attr("r", 0);
-    nodes.exit().selectAll("title")
-      .text("");
+        .attr("r", 0)
+        .attr("data-original-title", null)
+        .attr("data-toggle", null);
 
-    nodes.transition()
+    nodes.attr("data-original-title", function(d) {
+        return (d.r < bubbleTitleThreshold ? "<span>" + d.class + "</span><br />" : "") +
+               "<span>" + d.value + " Volunteer" + (d.value == 1 ? "" : "s") + "</span>";
+      })
+      .transition()
       .duration(750)
-        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+        .attr("transform", function(d) {
+          return "translate(" + d.x + "," + d.y + ")";
+        });
 
     nodes.selectAll("circle")
       .data(data, function(d) { return d.id; })
-      /*.style("cursor", function(d){
-        return d.children.filter(function(c){
-          return c.data.child_type === 'subtype'
-        }).length === 0 ? "not-allowed" : "pointer"
-      })*/
       .transition()
         .duration(750)
           .attr("r", function(d) { return d.r; });
-
-    nodes.selectAll("title")
-      .data(data, function(d) { return d.id; })
-      .text(function(d){
-        return (d.r < bubbleTitleThreshold ? d.class + "\n" : "") +
-               d.value + " Volunteer" + (d.value == 1 ? "" : "s");
-      });
 
     nodes.selectAll("text")
       .data(data, function(d) { return d.id; })
@@ -662,27 +593,22 @@
         .transition()
           .duration(750)
             .attr("font-size", function(d) { return d.r / 3; })
-            .attr("y", function(d, i, nodes) { return (5 * d.r / 12) + (i - nodes.length / 2 - 0.5) * (d.r / 3); })
-            .text(function(d) { return d.r > bubbleTitleThreshold ? d.text : ""; });
+            .attr("y", function(d, i, nodes) {
+              return (5 * d.r / 12) + (i - nodes.length / 2 - 0.5) * (d.r / 3);
+            })
+            .text(function(d) {
+              return d.r > bubbleTitleThreshold ? d.text : "";
+            });
 
     var newNodes = nodes.enter()
       .append("g")
         .attr("class", "node")
         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-        /*.on('click', bubblesClicked)
-        .on('mouseover', bubbleMouseover)
-        .on('mouseout', bubbleMouseout)
-        .style("cursor", function(d){
-          return d.children.filter(function(c){
-            return c.data.child_type === 'subtype'
-          }).length === 0 ? "not-allowed" : "pointer"
-        })*/;
-
-    newNodes.append("title")
-      .text(function(d){
-        return (d.r < bubbleTitleThreshold ? d.class + "\n" : "") +
-               d.value + " Volunteer" + (d.value == 1 ? "" : "s");
-      });
+        .attr("data-original-title", function(d) {
+          return (d.r < bubbleTitleThreshold ? "<span>" + d.class + "</span><br />" : "") +
+                 "<span>" + d.value + " Volunteer" + (d.value == 1 ? "" : "s") + "</span>";
+        })
+        .attr("data-toggle", "tooltip");
 
     newNodes.append("circle")
       .attr("id", function(d) { return d.id; })
@@ -706,13 +632,13 @@
         })
         .enter().append("tspan")
           .attr("x", 0)
-          .attr("y", function(d, i, nodes) { return (5 * d.r / 12) + (i - nodes.length / 2 - 0.5) * (d.r / 3); })
+          .attr("y", function(d, i, nodes) {
+            return (5 * d.r / 12) + (i - nodes.length / 2 - 0.5) * (d.r / 3);
+          })
           .attr("font-size", function(d) { return d.r / 3; })
           .text(function(d) { return d.r > bubbleTitleThreshold ? d.text : ""; });
-  }
 
-  function drawBubblesDetail() {
-    console.log(bubbleCentered);
+    $('.node[data-toggle="tooltip"]').tooltip({ container : "body", html: true });
   }
 
   function drawBubbles() {
@@ -765,45 +691,9 @@
 
     var data = bubble(root).children;
 
-    /*if (bubbleCentered) {
-      bubbleCentered = data.find(function(d) {
-        return d.id === bubbleCentered.id;
-      });
-      drawBubblesDetail();
-    } else {*/
-      drawBubblesOverview(data);
-    //}
+    drawBubblesOverview(data);
   }
 
-  // When the bubbles are clicked, zoom in and redraw the bubbles
-  function bubblesClicked(d) {
-    var x, y, k;
-
-    // Compute centroid of the selected path
-    if (d && bubbleCentered !== d && d.children.filter(function(c){ return c.data.child_type==='subtype' }).length !== 0) {
-      // Zoom in to view the neighborhood.
-      // Set the zoom scale based on the size of the neighborhood.
-      x = d.x
-      y = d.y
-      k = width/(2*d.r);
-      bubbleCentered = d;
-    } else {
-      x = width / 2;
-      y = height / 2;
-      k = 1;
-      bubbleCentered = null;
-    }
-
-    // Zoom
-    bubbleFg.transition()
-      .duration(750)
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
-
-    drawMap();
-    if (bubbleCentered) {
-      drawBubblesDetail();
-    }
-  }
 
   /************************************/
   /*****    Initial plot setup.   *****/

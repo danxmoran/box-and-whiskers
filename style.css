@@ -1,0 +1,105 @@
+/* Page styles. */
+body {
+  padding-top: 50px !important;
+  background: #e7e7e7;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+#navbar {
+  background-color: #cf090e;
+  border-bottom: 1px solid #bcb5ab;
+}
+
+.navbar-default .navbar-brand,
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-nav li a {
+  color: #fff;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #fff;
+}
+
+.navbar-default .navbar-nav .active a {
+  color: black;
+}
+
+.container > .row {
+  margin-bottom: 20px;
+}
+
+.container > .row:first-of-type {
+  margin-top: 20px;
+}
+
+.container > .row > .col-md-12 {
+  background-color: white;
+  border-top: 15px solid #cf090e;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+}
+
+a {
+  color: #cf090e;
+}
+
+a.anchor {
+  display: block;
+  position: relative;
+  top: -60px;
+  visibility: hidden;
+}
+
+text, h3 {
+  font-weight: 300;
+}
+
+h1 {
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #cf090e;
+  font-size: 2em;
+}
+
+h3, h4 {
+  text-align: center;
+}
+
+h4 {
+  font-weight: 200 !important;
+}
+
+#sketch-carousel {
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.carousel-inner .item img {
+  margin-left: auto;
+  margin-right: auto;
+  height: 500px;
+}
+
+/* Map styles. */
+.background {
+  fill: transparent;
+  pointer-events: all;
+}
+
+.map-layer {
+  fill: #fff;
+  stroke: #aaa;
+}
+
+.effect-layer {
+  pointer-events:none;
+}
+
+text.big-text {
+  font-size: 30px;
+  font-weight: 400;
+}
