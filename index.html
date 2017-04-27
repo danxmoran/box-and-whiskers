@@ -478,7 +478,7 @@
     d3.select(this).style("fill", function (d) {
       if (mapCentered && d === mapCentered) {
         return "white";
-      } else if(d.orgs.length !== 0){
+      } else if (d.orgs.length !== 0) {
         return "#fee391";
       } else {
         return d3.select(this).style("fill");
